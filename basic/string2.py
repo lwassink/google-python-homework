@@ -43,9 +43,23 @@ def not_bad(s):
 # e.g. 'abcde', the front half is 'abc', the back half 'de'.
 # Given 2 strings, a and b, return a string of the form
 #  a-front + b-front + a-back + b-back
+def halve(num):
+  half = num / 2
+  if num % 2 == 0:
+    return half
+  return half + 1
+
+
 def front_back(a, b):
-  # +++your code here+++
-  return
+  a_mid = halve(len(a))
+  b_mid = halve(len(b))
+
+  a_front = a[:a_mid]
+  a_back = a[a_mid:]
+  b_front = b[:b_mid]
+  b_back = b[b_mid:]
+
+  return a_front + b_front + a_back + b_back
 
 
 # Simple provided test() function used in main() to print
