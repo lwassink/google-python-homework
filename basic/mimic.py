@@ -26,7 +26,7 @@ the first word in the file.
 With the mimic dict, it's fairly easy to emit random
 text that mimics the original. Print a word, then look
 up what words might come next and pick one at random as
-the next work.
+the next word.
 Use the empty string as the first word to prime things.
 If we ever get stuck with a word that is not in the dict,
 go back to the empty string to keep things moving.
@@ -48,13 +48,30 @@ import sys
 def mimic_dict(filename):
   """Returns mimic dict mapping each word to list of words which follow it."""
   # +++your code here+++
-  return
+  f = open(filename, 'r')
+  words = f.read().split()
+
+  mimic_dict = {'': [words[0]], words[-1]: [words[0]]}
+  for idx, word in enumerate(words[:-1]):
+    if word not in mimic_dict:
+      mimic_dict[word] = [words[idx + 1]]
+    else:
+      mimic_dict[word].append(words[idx + 1])
+
+  return mimic_dict
 
 
 def print_mimic(mimic_dict, word):
   """Given mimic dict and start word, prints 200 random words."""
   # +++your code here+++
-  return
+  words = [word]
+  while len(words) < 200:
+    if word not in mimic_dict or len(mimic_dict[word]) == 0:
+      word = ''
+    word = random.choice(mimic_dict[word])
+    words.append(word)
+
+  print " ".join(words)
 
 
 # Provided main(), calls mimic_dict() and mimic()
