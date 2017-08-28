@@ -10,6 +10,7 @@ import os
 import re
 import sys
 import urllib
+import commands
 
 """Logpuzzle exercise
 Given an apache logfile, find the puzzle urls and download the images.
@@ -24,8 +25,13 @@ def read_urls(filename):
   extracting the hostname from the filename itself.
   Screens out duplicate urls and returns the urls sorted into
   increasing order."""
-  # +++your code here+++
-  
+  f = open(filename, 'r')
+  match = re.findall(r'GET (\S*puzzle\S*) HTTP', f.read())
+  f.close()
+  unique_urls = list(set(match))
+  unique_urls = ['http://code.google.com' + url for url in unique_urls]
+  return sorted(list(unique_urls))
+
 
 def download_images(img_urls, dest_dir):
   """Given the urls already in the correct order, downloads
@@ -36,7 +42,25 @@ def download_images(img_urls, dest_dir):
   Creates the directory if necessary.
   """
   # +++your code here+++
-  
+  if not os.path.exists(dest_dir):
+    os.mkdir(dest_dir)
+
+  index_file_path = os.path.join(dest_dir, 'index.html')
+  index_file = open(index_file_path, 'w')
+  index_file.write("<verbatim>\n<html>\n<body>\n")
+
+  print 'Retrieving images...'
+  for i in range(len(img_urls)):
+    filename =  'img' + str(i)
+    print img_urls[i]
+    urllib.urlretrieve(img_urls[i], os.path.join(dest_dir, filename))
+    index_file.write('<img src="' + filename + '">')
+
+  index_file.write("\n</body>\n</html>")
+  index_file.close()
+  print 'Opening...'
+  commands.getoutput('open ' + index_file_path)
+
 
 def main():
   args = sys.argv[1:]
