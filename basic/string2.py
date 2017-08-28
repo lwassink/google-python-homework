@@ -7,6 +7,7 @@
 # http://code.google.com/edu/languages/google-python-class/
 
 # Additional basic string exercises
+import re
 
 # D. verbing
 # Given a string, if its length is at least 3,
@@ -16,8 +17,11 @@
 # If the string length is less than 3, leave it unchanged.
 # Return the resulting string.
 def verbing(s):
-  # +++your code here+++
-  return
+  if len(s) < 3:
+    return s
+  if s[-3:] == 'ing':
+    return s + 'ly'
+  return s + 'ing'
 
 
 # E. not_bad
@@ -30,8 +34,7 @@ def verbing(s):
 # This dinner is good!
 def not_bad(s):
   # +++your code here+++
-  return
-
+  return re.sub(r'not.*bad', 'good', s, 1)
 
 # F. front_back
 # Consider dividing a string into two halves.
